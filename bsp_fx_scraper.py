@@ -10,16 +10,18 @@ try:
   from bs4 import BeautifulSoup
   import requests
 except:
-  sys.exit(sys.argv[0] + " maybe 'pip install requests bs4' first, then do a 'pip install bs4' then try again.\n")
+  sys.exit(sys.argv[0] + " maybe 'pip install requests bs4 lxml' first, then try again.\n")
 
 url = "http://www.bsp.com.pg/International/Exchange-Rates/Exchange-Rates.aspx"
 
 if platform == "linux" or platform == "linux2":
     home = os.environ['HOME']
-    data, country_code, csv_file, csv_codes = {}, {}, home + "/.bsp_rates.csv", home + "/.cc.csv"
+    data, country_code, csv_file, csv_codes = {}, {}, home + os.sep + ".bsp_rates.csv", home + os.sep + ".cc.csv"
+    clear = 'clear'
 else: #platform == "win32":
     home = os.environ['USERPROFILE']
-    data, country_code, csv_file, csv_codes = {}, {}, home + "\.bsp_rates.csv", home + "\.cc.csv"
+    data, country_code, csv_file, csv_codes = {}, {}, home + os.sep +  ".bsp_rates.csv", home + os.sep + ".cc.csv"
+    clear = 'cls'
 
 def get_fx_rates():
     # The main function that saves the rates and codes
@@ -94,11 +96,13 @@ def init():
 def convert(c_code, amt):
     if not valid_c_code(c_code):
         sys.exit(f"\n\n** Invalid Country Code! **\n{usage}")
+    os.system(clear)
     print(f"{amt} {c_code.upper()} to PGK")
     for _, cc in enumerate(data):
         if c_code == cc:
             print(f"Rate today: {data[cc]}")
             print("Converted: K{:.2f}".format(float(amt) / data[cc]))
+            print("Source: [http://www.bsp.com.pg/International/Exchange-Rates/Exchange-Rates.aspx]")
 
 
 def show_codes():
