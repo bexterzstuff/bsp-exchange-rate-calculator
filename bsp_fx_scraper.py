@@ -36,7 +36,7 @@ def get_fx_rates():
 
     for _, rate in enumerate(table_body):
         rate = rate.text.strip().split('\n')
-        c_code, country, value = rate[4], rate[3], rate[5]
+        c_code, country, value = rate[4], rate[3], rate[1]
         data[c_code] = float(value)
         country_code[c_code.lower()] = country
 
